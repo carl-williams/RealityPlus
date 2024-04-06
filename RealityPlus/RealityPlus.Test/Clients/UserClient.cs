@@ -8,12 +8,12 @@ namespace RealityPlus.Test.Clients
 
         public async Task<Guid?> CreateUser(UserDetailsWithPassword newUser)
         {
-            return await PostMessage<UserDetailsWithPassword, Guid>("", newUser);
+            return await Post<UserDetailsWithPassword, Guid>("", newUser, null);
         }
 
         public async Task<UserDetails?> GetUserDetails(Guid userId)
         {
-            return await GetMessage<UserDetails>($"/{userId}");
+            return await Get<UserDetails>($"/{userId}", null);
         }
     }
 }

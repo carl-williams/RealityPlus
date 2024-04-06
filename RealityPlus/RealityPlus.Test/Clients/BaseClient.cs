@@ -21,9 +21,9 @@ namespace RealityPlus.Test.Clients
             return $"{BaseUrl}/{extraUrl}".Trim('/');
         }
 
-        protected async Task<TResponse?> PostMessage<TRequest, TResponse>(string url, TRequest postData)
+        protected async Task<TResponse?> Post<TRequest, TResponse>(string url, TRequest postData, Dictionary<string, string>? headers)
         {
-            HttpClient client = new HttpClient();
+            HttpClient client = BuildHttpClient(headers);
 
             var json = JsonSerializer.Serialize(postData, JsonOptions);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -32,12 +32,31 @@ namespace RealityPlus.Test.Clients
             return await DeserializeResponse<TResponse>(reponse);
         }
 
-        protected async Task<TResponse?> GetMessage<TResponse>(string url)
+        protected async Task<TResponse?> Get<TResponse>(string url, Dictionary<string, string>? headers)
         {
-            HttpClient client = new HttpClient();
-
+            HttpClient client = BuildHttpClient(headers);
             var response = await client.GetAsync(BuildUrl(url));
             return await DeserializeResponse<TResponse>(response);
+        }
+
+        protected async Task Delete(string url, Dictionary<string, string>? headers)
+        {
+            HttpClient client = BuildHttpClient(headers);
+            var response = await client.DeleteAsync(BuildUrl(url));
+            await DeserializeResponse<string>(response);
+        }
+
+        private HttpClient BuildHttpClient(Dictionary<string, string>? headers)
+        {
+            HttpClient client = new HttpClient();
+            if (headers != null)
+            {
+                foreach (var (key, value) in headers)
+                {
+                    client.DefaultRequestHeaders.Add(key, value);
+                }
+            }
+            return client;
         }
 
         private async Task<TResponse?> DeserializeResponse<TResponse>(HttpResponseMessage response)
@@ -48,6 +67,10 @@ namespace RealityPlus.Test.Clients
             }
             var body = await response.Content.ReadAsStringAsync();
 
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return default;
+            }
             try
             {
                 return JsonSerializer.Deserialize<TResponse>(body, JsonOptions);

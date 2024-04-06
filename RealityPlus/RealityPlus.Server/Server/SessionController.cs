@@ -33,7 +33,7 @@ namespace RealityPlus.Server.Server
                 return false;
             }
             var sessionId = request.Headers.Get("sessionId");
-            if (string.IsNullOrWhiteSpace(sessionId) && request.HttpMethod != HttpMethod.Put.ToString())
+            if (string.IsNullOrWhiteSpace(sessionId) && request.HttpMethod != HttpMethod.Post.ToString())
             {
                 return false;
             }
@@ -43,10 +43,10 @@ namespace RealityPlus.Server.Server
                 case "get":
                     GetSessionUser(new Guid(sessionId), response);
                     return true;
-                case "del":
+                case "delete":
                     LogoutSession(new Guid(sessionId), response);
                     return true;
-                case "put":
+                case "post":
                     LoginUser(request, response);
                     return true;
             }
