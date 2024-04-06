@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealityPlus.Models", "RealityPlus.Models\RealityPlus.Models.csproj", "{ED828E62-4731-4B88-87BA-2A01CD999A96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B146A33-FFCB-4630-992D-36FE96DA2ADB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealityPlus.DataModels", "RealityPlus.Datalayer\RealityPlus.DataModels.csproj", "{3E8C2FB6-5F57-4634-BF2E-15E983C0F813}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealityPlus.BusinessLayer", "RealityPlus.BusinessLayer\RealityPlus.BusinessLayer.csproj", "{ABB7790B-3D05-4729-9ED4-779EF74E401D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealityPlus.InMemoryDataAccess", "RealityPlus.InMemoryDataAcccess\RealityPlus.InMemoryDataAccess.csproj", "{6B765E70-06DA-4380-BBD8-54E156F771DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealityPlus.Server", "RealityPlus.Server\RealityPlus.Server.csproj", "{22C0F8C1-CC71-4476-B5EC-24281B8967F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealityPlus.Test", "RealityPlus.Test\RealityPlus.Test.csproj", "{E893AD27-C7B3-4A67-9C68-C99009C12263}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED828E62-4731-4B88-87BA-2A01CD999A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED828E62-4731-4B88-87BA-2A01CD999A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED828E62-4731-4B88-87BA-2A01CD999A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED828E62-4731-4B88-87BA-2A01CD999A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E8C2FB6-5F57-4634-BF2E-15E983C0F813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8C2FB6-5F57-4634-BF2E-15E983C0F813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E8C2FB6-5F57-4634-BF2E-15E983C0F813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E8C2FB6-5F57-4634-BF2E-15E983C0F813}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB7790B-3D05-4729-9ED4-779EF74E401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB7790B-3D05-4729-9ED4-779EF74E401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB7790B-3D05-4729-9ED4-779EF74E401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB7790B-3D05-4729-9ED4-779EF74E401D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B765E70-06DA-4380-BBD8-54E156F771DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B765E70-06DA-4380-BBD8-54E156F771DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B765E70-06DA-4380-BBD8-54E156F771DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B765E70-06DA-4380-BBD8-54E156F771DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C0F8C1-CC71-4476-B5EC-24281B8967F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C0F8C1-CC71-4476-B5EC-24281B8967F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C0F8C1-CC71-4476-B5EC-24281B8967F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C0F8C1-CC71-4476-B5EC-24281B8967F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E893AD27-C7B3-4A67-9C68-C99009C12263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E893AD27-C7B3-4A67-9C68-C99009C12263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E893AD27-C7B3-4A67-9C68-C99009C12263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E893AD27-C7B3-4A67-9C68-C99009C12263}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16DCB87F-9009-4488-8DF0-791EE046B61D}
+	EndGlobalSection
+EndGlobal
