@@ -18,6 +18,7 @@ namespace RealityPlus.BusinessLayer.DI
 
             services.AddSingleton<IPasswordManageer, PasswordManager>();
             services.AddSingleton<IPlayer, Player>();
+            services.AddSingleton<IGameMatch, GameMatch>();
 
             return services;
         }

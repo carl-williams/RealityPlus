@@ -1,27 +1,189 @@
 ﻿using RealityPlus.Models.Player;
 using RealityPlus.Test.Clients;
+using System.Text.RegularExpressions;
 
 internal sealed class Program
 {
     private static UserClient User = new UserClient();
     private static SessionClient SessionClient = new SessionClient();
+    private static MatchClient MatchClient = new MatchClient();
+
+
+    private const string LowLoggedInUser = "lowUser";
+    private static string MediumLoggedInUser = "mediumUser";
+    private static string HighLoggedInUser = "highUser";
+    private static string MatchingDiffRegionUser = "differntRegion";
+
+    private static Guid MediumUserSession;
 
     private static void Main()
     {
         Console.WriteLine("Awaiting for the Game engine to Spin up");
         // Ensure the server has enough time to spin up
-        Thread.Sleep(5000);
+        Thread.Sleep(1000);
 
         Console.WriteLine("Starting Tests");
         MainAsync().GetAwaiter().GetResult();
         Console.WriteLine("Tests Completed");
 
+
+        Console.WriteLine("Press return to close");
+        Console.ReadLine();
     }
 
     private static async Task MainAsync()
     {
         await TestBasicUserAndSession();
+        await RampUpUsers();
+        await TestQuickMatch();
+        await TestRankMatch();
+    }
 
+    private static async Task TestQuickMatch()
+    {
+        Console.WriteLine("");
+        Console.WriteLine("Quick Matches");
+        Console.WriteLine("");
+        var sessionId = await SessionClient.Login("test123", "5678");
+        if (!sessionId.HasValue)
+        {
+            throw new Exception("Player failed to log in with the correct password");
+        }
+        var matches = await MatchClient.Match(sessionId.Value, false);
+        EnuseValuesMatch(4, matches.Count());
+        foreach (var match in matches)
+        {
+            Console.WriteLine(match);
+        }
+        Console.WriteLine("");
+        await SessionClient.Logout(sessionId.Value);
+    }
+
+    private static async Task TestRankMatch()
+    {
+        Console.WriteLine("");
+        Console.WriteLine("Ranked Matches (Closest logged in)");
+        Console.WriteLine("");
+        var sessionId = await SessionClient.Login("test123", "5678");
+        if (!sessionId.HasValue)
+        {
+            throw new Exception("Player failed to log in with the correct password");
+        }
+        var matches = await MatchClient.Match(sessionId.Value, true);
+        EnuseValuesMatch(1, matches.Count());
+        EnuseValuesMatch(MediumLoggedInUser, matches.First());
+        foreach (var match in matches)
+        {
+            Console.WriteLine(match);
+        }
+        Console.WriteLine("");
+        Console.WriteLine("Ranked Matches (Closest logged out in)");
+        await SessionClient.Logout(MediumUserSession);
+        matches = await MatchClient.Match(sessionId.Value, true);
+        EnuseValuesMatch(2, matches.Count());
+ 
+        //EnuseValuesMatch(MediumLoggedInUser, matches.First());
+        foreach (var match in matches)
+        {
+            Console.WriteLine(match);
+        }
+        if (!matches.Contains(LowLoggedInUser) || !matches.Contains(HighLoggedInUser))
+        {
+            throw new Exception("The Users for wide match are not what is expected");
+        }
+        Console.WriteLine("");
+        await SessionClient.Logout(sessionId.Value);
+    }
+
+
+    private static async Task RampUpUsers()
+    {
+        var lowUserNotLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = "low1",
+            FirstName = "low",
+            LastName = "1",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 15,
+            Email = "low@1.com",
+            Password = "testPass"
+        };
+        await User.CreateUser(lowUserNotLoggedIn);
+        var lowUserLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = LowLoggedInUser,
+            FirstName = "low",
+            LastName = "2",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 17,
+            Email = "low@1.com",
+            Password = "testPass"
+        };
+        await User.CreateUser(lowUserLoggedIn);
+        await SessionClient.Login(LowLoggedInUser, "testPass");
+
+        var medUserNotLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = "med1",
+            FirstName = "med",
+            LastName = "1",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 35,
+            Email = "med@1.com",
+            Password = "testPass"
+        };
+
+        await User.CreateUser(medUserNotLoggedIn);
+        var medUserLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = MediumLoggedInUser,
+            FirstName = "med",
+            LastName = "2",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 35,
+            Email = "med@1.com",
+            Password = "testPass"
+        };
+        await User.CreateUser(medUserLoggedIn);
+        MediumUserSession = (await SessionClient.Login(MediumLoggedInUser, "testPass")).GetValueOrDefault();
+
+        var highUserNotLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = "high1",
+            FirstName = "high",
+            LastName = "1",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 54,
+            Email = "high@1.com",
+            Password = "testPass"
+        };
+
+        await User.CreateUser(highUserNotLoggedIn);
+        var highUserLoggedIn = new UserDetailsWithPassword
+        {
+            UserName = HighLoggedInUser,
+            FirstName = "high",
+            LastName = "2",
+            Region = RealityPlus.Models.Common.ERegion.Europe,
+            Rank = 52,
+            Email = "high1.com",
+            Password = "testPass"
+        };
+        await User.CreateUser(highUserLoggedIn);
+        await SessionClient.Login(HighLoggedInUser, "testPass");
+
+        var diffRegionUser = new UserDetailsWithPassword
+        {
+            UserName = MatchingDiffRegionUser,
+            FirstName = "diff",
+            LastName = "user",
+            Region = RealityPlus.Models.Common.ERegion.NorthAmerica,
+            Rank = 52,
+            Email = "diff.user@test.com",
+            Password = "testPass"
+        };
+        await User.CreateUser(diffRegionUser);
+        await SessionClient.Login(MatchingDiffRegionUser, "testPass");
     }
 
     private static async Task TestBasicUserAndSession()
@@ -33,7 +195,7 @@ internal sealed class Program
             FirstName = "CW",
             LastName = "testign1",
             Region = RealityPlus.Models.Common.ERegion.Europe,
-            Rank = 55,
+            Rank = 33,
             Email = "cw@test.com",
             Password = "5678"
         };

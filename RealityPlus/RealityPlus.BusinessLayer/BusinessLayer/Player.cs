@@ -78,5 +78,13 @@ namespace RealityPlus.BusinessLayer.BusinessLayer
         {
             return Sessions.TryRemove(sessionId, out _);
         }
+
+        IEnumerable<Guid> IPlayer.GetAlllAvaliableOpponents(Guid currentUser)
+        {
+            return Sessions
+                .Where(s => s.Key != currentUser)
+                .Select(s => s.Value)
+                .ToList();
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace RealityPlus.Models.Interfaces
         public UserDetails GetUserByPlayerId(Guid playerId);
         public void ChangeUserPassword(Guid sessionId, SecureString password, SecureString newPassword);
         public Guid CreateUser(UserDetails newUser, SecureString password);
+        IEnumerable<Guid> GetAlllAvaliableOpponents(Guid currentUser);
     }
 }
